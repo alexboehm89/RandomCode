@@ -15,15 +15,15 @@ file=$2
 
 if [ "$action" == "copy-photo" ]; then
     # Check if file with currently chosen directory exists
-    if [ -f "current_directory" ]; then
-    current_dir=`cat current_directory`
+    if [ -f ".feh_current_directory" ]; then
+    current_dir=`cat .feh_current_directory`
     fi
     # If there is no current directory chosen ask user to choose one
     if [ ! -d "$current_dir" ] ; then
         current_dir="$(find -type d -printf '%f\n' | dmenu -p "Select directory")"
         mkdir "$current_dir"
         # Save current directory for next script call
-        echo "${current_dir}" > current_directory
+        echo "${current_dir}" > .feh_current_directory
     fi
     # Copy file to chosen directory and print out information
     cp $file $current_dir
@@ -41,5 +41,5 @@ if [ "$action" == "change-directory" ]; then
         echo "Switched to directory: "$current_dir""
     fi
     # Save current directory for next script call
-    echo "${current_dir}" > current_directory
+    echo "${current_dir}" > .feh_current_directory
 fi
