@@ -43,3 +43,16 @@ if [ "$action" == "change-directory" ]; then
     # Save current directory for next script call
     echo "${current_dir}" > .feh_current_directory
 fi
+
+if [ "$action" == "delete" ]; then
+    # Define path to Trash
+    trash_dir=./Trash
+    # Check if trash directory already exists
+    if [ ! -d "$trash_dir" ]; then
+        mkdir Trash
+    fi
+    # Move photo to Trash
+    cp $file $trash_dir
+    # Inform user
+    echo "Moved $file to Trash"
+fi
