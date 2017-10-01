@@ -13,6 +13,8 @@ action=$1
 # Second input is current photo
 file=$2
 
+#################### COPY-PHOTO ####################
+
 if [ "$action" == "copy-photo" ]; then
     # Check if file with currently chosen directory exists
     if [ -f ".feh_current_directory" ]; then
@@ -30,6 +32,7 @@ if [ "$action" == "copy-photo" ]; then
     echo "Moved $file to $current_dir"
 fi
 
+#################### CHANGE-DIRECTORY ####################
 if [ "$action" == "change-directory" ]; then
     # Ask user for directory
     current_dir="$(find -type d -printf '%f\n' | dmenu -p "Select directory")"
@@ -44,6 +47,7 @@ if [ "$action" == "change-directory" ]; then
     echo "${current_dir}" > .feh_current_directory
 fi
 
+#################### DELETE #################### 
 if [ "$action" == "delete" ]; then
     # Define path to Trash
     trash_dir=./Trash
@@ -55,4 +59,29 @@ if [ "$action" == "delete" ]; then
     cp $file $trash_dir
     # Inform user
     echo "Moved $file to Trash"
+fi
+
+#################### CUSTOM DIRECTORY  #################### 
+if [ "$action" == "facebook" ]; then
+    custom_dir=./facebook
+    # Check if custom directory already exists
+    if [ ! -d "$custom_dir" ]; then
+        mkdir facebook
+    fi
+    # Move photo to custom directory
+    cp $file $custom_dir
+    # Inform user
+    echo "Moved $file to facebook"
+fi
+
+if [ "$action" == "private" ]; then
+    custom_dir=./private
+    # Check if custom directory already exists
+    if [ ! -d "$custon_dir" ]; then
+        mkdir private
+    fi
+    # Move photo to custom directory
+    cp $file $custom_dir
+    # Inform user
+    echo "Moved $file to private"
 fi
