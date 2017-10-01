@@ -1,5 +1,21 @@
 #!/bin/bash
 
+function modify_file {
+    # Assign inputs
+    file=$1
+    dir=$2
+    modifier=$3
+    # Check if directory already exists
+    if [ ! -d "$dir" ]; then
+        mkdir $dir
+    fi
+    # Modify photo
+    $modifier $file $dir
+    # Inform user
+    echo "$modifier: $file to $dir"
+}
+
+
 # Script for use with feh to sort photos
 
 # Check if number of inputs is correct
@@ -28,8 +44,7 @@ if [ "$action" == "copy-photo" ]; then
         echo "${current_dir}" > .feh_current_directory
     fi
     # Copy file to chosen directory and print out information
-    cp $file $current_dir
-    echo "Moved $file to $current_dir"
+    modify_file $file $current_dir cp
 fi
 
 #################### CHANGE-DIRECTORY ####################
@@ -49,39 +64,14 @@ fi
 
 #################### DELETE #################### 
 if [ "$action" == "delete" ]; then
-    # Define path to Trash
-    trash_dir=./Trash
-    # Check if trash directory already exists
-    if [ ! -d "$trash_dir" ]; then
-        mkdir Trash
-    fi
-    # Move photo to Trash
-    cp $file $trash_dir
-    # Inform user
-    echo "Moved $file to Trash"
+    modify_file $file trash cp
 fi
 
 #################### CUSTOM DIRECTORY  #################### 
 if [ "$action" == "facebook" ]; then
-    custom_dir=./facebook
-    # Check if custom directory already exists
-    if [ ! -d "$custom_dir" ]; then
-        mkdir facebook
-    fi
-    # Move photo to custom directory
-    cp $file $custom_dir
-    # Inform user
-    echo "Moved $file to facebook"
+    modify_file $file facebook cp
 fi
 
 if [ "$action" == "private" ]; then
-    custom_dir=./private
-    # Check if custom directory already exists
-    if [ ! -d "$custon_dir" ]; then
-        mkdir private
-    fi
-    # Move photo to custom directory
-    cp $file $custom_dir
-    # Inform user
-    echo "Moved $file to private"
+    modify_file $file private cp
 fi
