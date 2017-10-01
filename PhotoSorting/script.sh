@@ -58,6 +58,8 @@ if [ "$action" == "change-directory" ]; then
     else
         echo "Switched to directory: "$current_dir""
     fi
+    # Copy file to chosen directory and print out information
+    modify_file $file $current_dir cp
     # Save current directory for next script call
     echo "${current_dir}" > .feh_current_directory
 fi
