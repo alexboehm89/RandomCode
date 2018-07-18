@@ -1,0 +1,6 @@
+# Alias for running feh with script
+script_dir="/home/alex/Repositories/RandomCode/PhotoSorting/script.sh"
+action1="$script_dir copy-photo %F"
+action2=";$script_dir change-directory %F"
+action3="$script_dir delete %F"
+alias feh='feh --action1 "$action1" --action2 "$action2" --action3 "$action3" --geometry 1280x600' 
