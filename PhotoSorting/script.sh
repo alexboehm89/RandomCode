@@ -20,7 +20,7 @@ function modify_file {
 
 # Check if number of inputs is correct
 if [ $# -lt 2 ]; then
-    echo -e usage: "$0 <action> <filename>\n actions: copy-photo, change-directory"
+    echo -e usage: "$0 <action> <filename>\n actions: copy-photo, change-directory, delete"
     exit -1
 fi
 
@@ -59,21 +59,12 @@ if [ "$action" == "change-directory" ]; then
         echo "Switched to directory: "$current_dir""
     fi
     # Copy file to chosen directory and print out information
-    modify_file $file $current_dir cp
+    #modify_file $file $current_dir cp
     # Save current directory for next script call
     echo "${current_dir}" > .feh_current_directory
 fi
 
 #################### DELETE #################### 
 if [ "$action" == "delete" ]; then
-    modify_file $file trash cp
-fi
-
-#################### CUSTOM DIRECTORY  #################### 
-if [ "$action" == "facebook" ]; then
-    modify_file $file facebook cp
-fi
-
-if [ "$action" == "private" ]; then
-    modify_file $file private cp
+    modify_file $file trash mv
 fi
