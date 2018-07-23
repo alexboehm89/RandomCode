@@ -13,6 +13,9 @@ function modify_file {
     $modifier $file $dir
     # Inform user
     echo "$modifier: $file to $dir"
+    # Save action to history
+    echo "$modifier $file $dir" >> .feh_history
+
 }
 
 
@@ -34,7 +37,7 @@ file=$2
 if [ "$action" == "copy-photo" ]; then
     # Check if file with currently chosen directory exists
     if [ -f ".feh_current_directory" ]; then
-    current_dir=`cat .feh_current_directory`
+        current_dir=`cat .feh_current_directory`
     fi
     # If there is no current directory chosen ask user to choose one
     if [ ! -d "$current_dir" ] ; then
@@ -58,8 +61,6 @@ if [ "$action" == "change-directory" ]; then
     else
         echo "Switched to directory: "$current_dir""
     fi
-    # Copy file to chosen directory and print out information
-    #modify_file $file $current_dir cp
     # Save current directory for next script call
     echo "${current_dir}" > .feh_current_directory
 fi
@@ -68,3 +69,35 @@ fi
 if [ "$action" == "delete" ]; then
     modify_file $file trash mv
 fi
+
+#################### UNDO #################### 
+if [ "$action" == "undo" ]; then
+    # Check if last action is saved in history
+    if [ -f ".feh_history" ]; then
+	read -r modifier old_filename new_dir < <(tail -n 1 .feh_history)
+	# Get new filename and destination
+	IFS='/'
+	read -ra ARRAY <<< "$old_filename"
+	unset IFS
+	dest=${ARRAY[0]}
+	file=$new_dir/${ARRAY[1]}
+	if [ $modifier = cp ]; then
+ 	    # Remove copied file
+	    rm $file
+	    # Inform user
+	    echo "rm: $file"
+	    # Remove from history
+	    sed -i '$d' .feh_history
+        elif [ $modifier = mv ]; then
+	    modify_file $file $dest mv
+	    # Remove last 2 lines of history
+	    sed -i '$d' .feh_history
+	    sed -i '$d' .feh_history
+        else  
+	    echo "History of last actions is broken"
+        fi
+    else
+	echo "Already at oldest change!"
+    fi
+fi
+
