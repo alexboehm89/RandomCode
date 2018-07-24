@@ -73,7 +73,7 @@ fi
 #################### UNDO #################### 
 if [ "$action" == "undo" ]; then
     # Check if last action is saved in history
-    if [ -f ".feh_history" ]; then
+    if [ -s ".feh_history" ]; then
 	read -r modifier old_filename new_dir < <(tail -n 1 .feh_history)
 	# Get new filename and destination
 	IFS='/'
