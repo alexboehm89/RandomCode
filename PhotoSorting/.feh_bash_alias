@@ -3,4 +3,5 @@ script_dir="/home/alex/Repositories/RandomCode/PhotoSorting/script.sh"
 action1="$script_dir copy-photo %F"
 action2=";$script_dir change-directory %F"
 action3="$script_dir delete %F"
-alias feh='feh --action1 "$action1" --action2 "$action2" --action3 "$action3" --geometry 1280x600' 
+action4="$script_dir undo %F"
+alias feh='feh --action1 "$action1" --action2 "$action2" --action3 "$action3" --action4 "$action4" --geometry 1280x600' 
